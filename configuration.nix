@@ -1,6 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 {
-  imports = [ (pkgs.path + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix") ];
+  imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = "ShadowOS";
   networking.networkmanager.enable = true;
@@ -13,7 +13,7 @@
   programs.hyprland.xwayland.enable = true;
   services.greetd.enable = true;
   services.greetd.settings.default_session = {
-    command = "\${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+    command = "${"${"}pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
     user = "greeter";
   };
   services.dbus.enable = true;
