@@ -1,6 +1,9 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, shadows-shell, ... }:
 {
-  imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+  imports = [
+    (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
+    (shadows-shell + "/nix/module.nix")
+  ];
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = "ShadowOS";
   networking.networkmanager.enable = true;
@@ -75,6 +78,7 @@
     exec-once = swaync
     exec-once = nm-applet --indicator
     exec-once = blueman-applet
+    exec-once = bash /etc/shadowos/install-shell.sh
     input {
       kb_layout = es
     }
@@ -109,7 +113,35 @@
     bind = $mod, V, togglefloating
     bind = $mod, M, exit
   '';
-  system.stateVersion = "25.11";
+
+  # The actual desktop shell is fetched from its author's public repository on first login,
+  # then installed into each user's home directory. Its source is not redistributed in this ISO.
+  environment.etc."shadowos/install-shell.sh" = {
+    mode = "0755";
+    text = ''
+      #!/usr/bin/env bash
+      set -u
+      target="$HOME/.local/share/darkshadows-shell"
+      if [ -f "$HOME/.config/rice/version" ]; then
+        exit 0
+      fi
+      mkdir -p "$(dirname "$target")"
+      for attempt in $(seq 1 12); do
+        if [ -d "$target/.git" ]; then
+          break
+        fi
+        rm -rf "$target"
+        if git clone --depth 1 https://github.com/shadowww-dev/shadows-shell.git "$target"; then
+          break
+        fi
+        sleep 5
+      done
+      if [ -x "$target/install.sh" ]; then
+        "$target/install.sh" --yes || true
+      fi
+    '';
+  };
+\n  system.stateVersion = "25.11";
   isoImage.isoName = "ShadowOS-x86_64.iso";
   isoImage.makeEfiBootable = true;
   isoImage.makeUsbBootable = true;
