@@ -49,10 +49,10 @@
     wl-clipboard grim slurp
     polkit_gnome xdg-utils xdg-user-dirs
     papirus-icon-theme bibata-cursors
-    adwaita-icon-theme noto-fonts noto-fonts-emoji
+    adwaita-icon-theme noto-fonts noto-fonts-color-emoji
     inter jetbrains-mono gnome-disk-utility
   ];
-  fonts.packages = with pkgs; [ inter jetbrains-mono noto-fonts noto-fonts-emoji ];
+  fonts.packages = with pkgs; [ inter jetbrains-mono noto-fonts noto-fonts-color-emoji ];
   environment.etc."xdg/waybar/config".text = builtins.toJSON {
     layer = "top";
     position = "top";
