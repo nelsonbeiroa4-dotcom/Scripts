@@ -13,7 +13,7 @@
   programs.hyprland.xwayland.enable = true;
   services.greetd.enable = true;
   services.greetd.settings.default_session = {
-    command = "${"${"}pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+    command = toString pkgs.greetd.tuigreet + "/bin/tuigreet --time --cmd Hyprland";
     user = "greeter";
   };
   services.dbus.enable = true;
