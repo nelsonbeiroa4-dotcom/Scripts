@@ -1,0 +1,32 @@
+name: Build ShadowOS ISO
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build bootable ISO
+        run: |
+          nix --extra-experimental-features 'nix-command flakes' build .#nixosConfigurations.shadowos.config.system.build.isoImage --print-out-paths
+          mkdir -p dist
+          cp -L result/iso/ShadowOS-x86_64.iso dist/ShadowOS-x86_64.iso
+          sha256sum dist/ShadowOS-x86_64.iso > dist/SHA256SUMS.txt
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShadowOS-ISO
+          path: dist/*
+          compression-level: 0
+          retention-days: 14
