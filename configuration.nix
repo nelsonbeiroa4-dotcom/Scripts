@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 {
-  imports = [ "\${pkgs.path}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix" ];
+  imports = [ (pkgs.path + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix") ];
   nixpkgs.hostPlatform = "x86_64-linux";
   networking.hostName = "ShadowOS";
   networking.networkmanager.enable = true;
