@@ -15,7 +15,7 @@
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
   services.greetd.enable = true;
-  services.greetd.settings.default_session = {
+  services.greetd.settings.initial_session = {\n    command = "Hyprland";\n    user = "nixos";\n  };\n  services.greetd.settings.default_session = {
     command = toString pkgs.tuigreet + "/bin/tuigreet --time --cmd Hyprland";
     user = "greeter";
   };
