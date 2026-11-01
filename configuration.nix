@@ -27,6 +27,7 @@
   security.polkit.enable = true;
   services.udisks2.enable = true;
   services.gvfs.enable = true;
+  hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
