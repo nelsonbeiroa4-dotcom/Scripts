@@ -141,7 +141,8 @@
       fi
     '';
   };
-\n  system.stateVersion = "25.11";
+
+  system.stateVersion = "25.11";
   isoImage.isoName = "ShadowOS-x86_64.iso";
   isoImage.makeEfiBootable = true;
   isoImage.makeUsbBootable = true;
